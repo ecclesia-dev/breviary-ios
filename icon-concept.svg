@@ -1,0 +1,112 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <defs>
+    <radialGradient id="bg" cx="40%" cy="35%" r="70%">
+      <stop offset="0%" stop-color="#1A0A2E"/>
+      <stop offset="100%" stop-color="#0D0518"/>
+    </radialGradient>
+    <radialGradient id="lampGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FFD700" stop-opacity="0.6"/>
+      <stop offset="60%" stop-color="#CC8400" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="#CC8400" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="pageLeft" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#F5E6C8"/>
+      <stop offset="100%" stop-color="#E8D5A8"/>
+    </linearGradient>
+    <linearGradient id="pageRight" x1="1" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#F5E6C8"/>
+      <stop offset="100%" stop-color="#E0CFA0"/>
+    </linearGradient>
+    <linearGradient id="goldBorder" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#D4A017"/>
+      <stop offset="50%" stop-color="#FFD700"/>
+      <stop offset="100%" stop-color="#B8860B"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1024" height="1024" fill="url(#bg)"/>
+
+  <!-- Gold filigree border -->
+  <rect x="30" y="30" width="964" height="964" rx="8" fill="none" stroke="url(#goldBorder)" stroke-width="4" opacity="0.7"/>
+  <rect x="42" y="42" width="940" height="940" rx="6" fill="none" stroke="#B8860B" stroke-width="1.5" opacity="0.5"/>
+  <!-- Corner crosses -->
+  <g fill="#D4A017" opacity="0.6">
+    <g transform="translate(55,55)"><rect x="-6" y="-2" width="12" height="4"/><rect x="-2" y="-6" width="4" height="12"/></g>
+    <g transform="translate(969,55)"><rect x="-6" y="-2" width="12" height="4"/><rect x="-2" y="-6" width="4" height="12"/></g>
+    <g transform="translate(55,969)"><rect x="-6" y="-2" width="12" height="4"/><rect x="-2" y="-6" width="4" height="12"/></g>
+    <g transform="translate(969,969)"><rect x="-6" y="-2" width="12" height="4"/><rect x="-2" y="-6" width="4" height="12"/></g>
+  </g>
+
+  <!-- Lamp glow -->
+  <ellipse cx="350" cy="280" rx="300" ry="280" fill="url(#lampGlow)"/>
+
+  <!-- Oil lamp -->
+  <g transform="translate(300, 230)">
+    <!-- Lamp body -->
+    <ellipse cx="0" cy="0" rx="28" ry="14" fill="#D4A017" stroke="#B8860B" stroke-width="2"/>
+    <path d="M-28,0 Q-28,14 -14,18 L14,18 Q28,14 28,0" fill="#B8860B"/>
+    <!-- Spout -->
+    <path d="M28,-2 L50,-8 L50,4 L28,2" fill="#D4A017" stroke="#B8860B" stroke-width="1"/>
+    <!-- Flame -->
+    <ellipse cx="52" cy="-16" rx="6" ry="14" fill="#FFD700" opacity="0.9"/>
+    <ellipse cx="52" cy="-18" rx="3" ry="8" fill="#FFF8E0"/>
+    <!-- Handle -->
+    <path d="M-10,-14 Q-10,-35 10,-35 Q10,-35 10,-14" fill="none" stroke="#D4A017" stroke-width="3"/>
+  </g>
+
+  <!-- Lectern/book stand (dark wood) -->
+  <path d="M340,780 L380,620 L644,620 L684,780 Z" fill="#2A1810" stroke="#1A0E08" stroke-width="2"/>
+  <rect x="370" y="610" width="284" height="16" rx="3" fill="#3B2210" stroke="#2A1810" stroke-width="1"/>
+
+  <!-- Open book - left page -->
+  <g transform="translate(512, 520)">
+    <path d="M-10,0 L-200,-100 L-200,100 L-10,80 Z" fill="url(#pageLeft)" stroke="#C4B48A" stroke-width="1.5"/>
+    <!-- Spine shadow -->
+    <path d="M-10,-5 L-10,85" stroke="#A09070" stroke-width="3" opacity="0.4"/>
+
+    <!-- Illuminated capital D on left page -->
+    <g transform="translate(-150, -40)">
+      <!-- Gold background for letter -->
+      <rect x="-30" y="-35" width="60" height="70" rx="4" fill="#D4A017" opacity="0.3"/>
+      <!-- The letter D -->
+      <text x="0" y="15" font-family="serif" font-size="72" font-weight="bold" fill="#D4A017" text-anchor="middle">D</text>
+      <!-- Red vine tendrils -->
+      <path d="M-25,35 Q-35,50 -20,55 Q-5,48 -10,35" fill="none" stroke="#8B1A1A" stroke-width="2.5"/>
+      <path d="M25,35 Q35,50 20,55 Q5,48 10,35" fill="none" stroke="#8B1A1A" stroke-width="2.5"/>
+      <circle cx="-22" cy="55" r="3" fill="#8B1A1A"/>
+      <circle cx="22" cy="55" r="3" fill="#8B1A1A"/>
+    </g>
+
+    <!-- Text lines on left page -->
+    <g opacity="0.6">
+      <line x1="-180" y1="40" x2="-60" y2="15" stroke="#8B1A1A" stroke-width="2"/>
+      <line x1="-180" y1="52" x2="-60" y2="27" stroke="#1B3A5C" stroke-width="1.5"/>
+      <line x1="-180" y1="64" x2="-60" y2="39" stroke="#1B3A5C" stroke-width="1.5"/>
+      <line x1="-180" y1="76" x2="-60" y2="51" stroke="#8B1A1A" stroke-width="1.5"/>
+    </g>
+
+    <!-- Open book - right page -->
+    <path d="M10,0 L200,-100 L200,100 L10,80 Z" fill="url(#pageRight)" stroke="#C4B48A" stroke-width="1.5"/>
+
+    <!-- Gold cross at top of right page -->
+    <g transform="translate(105,-65)" fill="#D4A017">
+      <rect x="-1.5" y="-8" width="3" height="16"/>
+      <rect x="-5" y="-4" width="10" height="3"/>
+    </g>
+
+    <!-- Text lines on right page -->
+    <g opacity="0.5">
+      <line x1="50" y1="-40" x2="180" y2="-65" stroke="#1B3A5C" stroke-width="1.5"/>
+      <line x1="50" y1="-28" x2="180" y2="-53" stroke="#1B3A5C" stroke-width="1.5"/>
+      <line x1="50" y1="-16" x2="180" y2="-41" stroke="#8B1A1A" stroke-width="1.5"/>
+      <line x1="50" y1="-4" x2="180" y2="-29" stroke="#1B3A5C" stroke-width="1.5"/>
+      <line x1="50" y1="8" x2="180" y2="-17" stroke="#1B3A5C" stroke-width="1.5"/>
+      <line x1="50" y1="20" x2="180" y2="-5" stroke="#1B3A5C" stroke-width="1.5"/>
+      <line x1="50" y1="32" x2="180" y2="7" stroke="#8B1A1A" stroke-width="1.5"/>
+      <line x1="50" y1="44" x2="180" y2="19" stroke="#1B3A5C" stroke-width="1.5"/>
+      <line x1="50" y1="56" x2="180" y2="31" stroke="#1B3A5C" stroke-width="1.5"/>
+      <line x1="50" y1="68" x2="180" y2="43" stroke="#1B3A5C" stroke-width="1.5"/>
+    </g>
+  </g>
+</svg>
