@@ -146,8 +146,8 @@ struct LiturgicalCalendar {
             return .passiontide
         }
 
-        // Easter
-        if date >= keys.easter && date < keys.pentecost {
+        // Easter (includes Pentecost Sunday itself — Pasc7-0)
+        if date >= keys.easter && date <= keys.pentecost {
             return .easter
         }
 
@@ -181,17 +181,29 @@ struct LiturgicalCalendar {
             let weeks = cal.dateComponents([.weekOfYear], from: keys.septuagesima, to: date).weekOfYear ?? 0
             return "Quadp\(weeks + 1)-\(weekday)"
         case .lent:
-            let weeks = cal.dateComponents([.weekOfYear], from: keys.ashWednesday, to: date).weekOfYear ?? 0
+            // Ash Wednesday through Saturday before Lent I Sunday → Quadp3-X series.
+            // Lent I Sunday onward → Quad1-X, Quad2-X, … counted from the first Sunday of Lent.
+            // Ash Wednesday is always a Wednesday; the first Sunday of Lent is 4 days later.
+            let firstSundayOfLent = cal.date(byAdding: .day, value: 4, to: keys.ashWednesday)!
+            if date < firstSundayOfLent {
+                return "Quadp3-\(weekday)"
+            }
+            let weeks = cal.dateComponents([.weekOfYear], from: firstSundayOfLent, to: date).weekOfYear ?? 0
             return "Quad\(weeks + 1)-\(weekday)"
         case .passiontide:
+            // Passion Sunday week = Quad5-X, Holy Week = Quad6-X.
             let passionSunday = cal.date(byAdding: .day, value: -14, to: keys.easter)!
             let weeks = cal.dateComponents([.weekOfYear], from: passionSunday, to: date).weekOfYear ?? 0
-            return "Quadp\(weeks + 3)-\(weekday)"
+            return "Quad\(weeks + 5)-\(weekday)"
         case .easter:
+            // Pentecost Sunday stays in .easter → Pasc7-0.
             let weeks = cal.dateComponents([.weekOfYear], from: keys.easter, to: date).weekOfYear ?? 0
             return "Pasc\(weeks)-\(weekday)"
         case .pentecost:
-            let weeks = cal.dateComponents([.weekOfYear], from: keys.pentecost, to: date).weekOfYear ?? 0
+            // Count from the day after Pentecost so that Trinity Sunday (Pent+7 days)
+            // correctly maps to Pent01-0 rather than Pent02-0.
+            let dayAfterPentecost = cal.date(byAdding: .day, value: 1, to: keys.pentecost)!
+            let weeks = cal.dateComponents([.weekOfYear], from: dayAfterPentecost, to: date).weekOfYear ?? 0
             return "Pent\(String(format: "%02d", weeks + 1))-\(weekday)"
         }
     }

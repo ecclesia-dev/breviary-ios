@@ -373,19 +373,37 @@ final class OfficeBuilder {
         s.append(OfficeSection(
             type: .antiphon,
             title: "Marian Antiphon",
-            content: marianAntiphon(for: day.season)
+            content: marianAntiphon(for: day)
         ))
 
         return s
     }
 
-    // MARK: - Marian Antiphons by Season
+    // MARK: - Marian Antiphons by Season (1962 rubrics)
+    //
+    // Per the 1962 Roman Rite:
+    //   Alma Redemptoris Mater  — First Vespers of Advent through Compline of Feb 2 (Purification)
+    //   Ave Regina Caelorum     — Feb 2 (after Compline) through Wednesday of Holy Week
+    //   Regina Caeli            — Easter through Pentecost (inclusive)
+    //   Salve Regina            — Trinity Sunday through None of last Saturday before Advent
+    //
+    // The season enum alone is insufficient because the Epiphany season straddles the
+    // Feb 2 boundary; the actual calendar date must decide which antiphon is used.
 
-    private func marianAntiphon(for season: LiturgicalSeason) -> String {
-        switch season {
+    private func marianAntiphon(for day: LiturgicalDay) -> String {
+        let cal = Calendar.current
+        let month = cal.component(.month, from: day.date)
+        let dayOfMonth = cal.component(.day, from: day.date)
+
+        switch day.season {
         case .advent, .christmas:
             return "Alma Redemptoris Mater, quae pervia caeli porta manes, et stella maris, succurre cadenti, surgere qui curat, populo: tu quae genuisti, natura mirante, tuum sanctum Genitorem, Virgo prius ac posterius, Gabrielis ab ore sumens illud Ave, peccatorum miserere."
         case .epiphany, .septuagesima:
+            // Alma Redemptoris Mater through Compline of Feb 2 (Purification of the B.V.M.);
+            // Ave Regina Caelorum from Feb 3 onward.
+            if month == 1 || (month == 2 && dayOfMonth <= 2) {
+                return "Alma Redemptoris Mater, quae pervia caeli porta manes, et stella maris, succurre cadenti, surgere qui curat, populo: tu quae genuisti, natura mirante, tuum sanctum Genitorem, Virgo prius ac posterius, Gabrielis ab ore sumens illud Ave, peccatorum miserere."
+            }
             return "Ave, Regina caelorum, ave, Domina Angelorum: salve, radix, salve, porta, ex qua mundo lux est orta: Gaude, Virgo gloriosa, super omnes speciosa: vale, o valde decora, et pro nobis Christum exora."
         case .lent, .passiontide:
             return "Ave, Regina caelorum, ave, Domina Angelorum: salve, radix, salve, porta, ex qua mundo lux est orta: Gaude, Virgo gloriosa, super omnes speciosa: vale, o valde decora, et pro nobis Christum exora."
