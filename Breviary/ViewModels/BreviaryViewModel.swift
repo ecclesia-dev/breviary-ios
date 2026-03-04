@@ -16,11 +16,11 @@ final class BreviaryViewModel {
         self.currentHour = CanonicalHour.current(at: now)
     }
 
-    /// Load data and prepare for display
+    /// Load data and prepare for display.
+    /// Loads the Psalterium (150 psalms) from bundled BreviaryData files.
     func load() async {
         isLoading = true
-        // TODO: Load psalterium from bundled divinum-officium-data
-        // await PsalteriumLoader.shared.loadPsalms(from: dataPath)
+        await PsalteriumLoader.shared.loadAll()
         isLoading = false
     }
 

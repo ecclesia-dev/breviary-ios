@@ -56,17 +56,29 @@ struct BreviaryProvider: TimelineProvider {
     private func makeEntry(for date: Date) -> BreviaryEntry {
         let hour = CanonicalHour.current(at: date)
         let day = LiturgicalCalendar.resolve(date: date)
+        let loader = TemporaLoader(day: day)
 
-        let versicle = hour.openingVersicle
-            .components(separatedBy: "\n")
-            .first ?? hour.openingVersicle
+        // Prefer the feast's opening antiphon from data files;
+        // fall back to the canonical formulary versicle.
+        let openingLine: String = {
+            if let ant = loader.antiphon1, !ant.isEmpty {
+                // Strip any psalm reference suffix (;;N)
+                return OfficeDataParser.extractAntiphonText(ant)
+            }
+            return hour.openingVersicle
+                .components(separatedBy: "\n")
+                .first ?? hour.openingVersicle
+        }()
+
+        // Use the officium name from data if available, else liturgical day name.
+        let feastName = loader.officiumName ?? day.name
 
         return BreviaryEntry(
             date: date,
             hourName: hour.name,
             hourLatinName: hour.latinName,
-            openingVersicle: versicle,
-            feastName: day.name,
+            openingVersicle: openingLine,
+            feastName: feastName,
             systemImage: hour.systemImage
         )
     }
