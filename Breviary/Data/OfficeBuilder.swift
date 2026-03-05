@@ -336,11 +336,13 @@ final class OfficeBuilder {
             content: "Fratres: Sobrii estote, et vigilate: quia adversarius vester diabolus tamquam leo rugiens circuit, quaerens quem devoret: cui resistite fortes in fide.\nTu autem, Domine, miserere nobis. R. Deo gratias."
         ))
 
+        // M3: The key in Prayers.txt is "Confiteor_" (with underscore), not "Confiteor".
+        // Fallback is the complete Roman Rite Latin text — both halves of the prayer.
         s.append(OfficeSection(
             type: .preces,
             title: "Confiteor",
-            content: DataBundle.prayer("Confiteor")
-                ?? "Confiteor Deo omnipotenti, beatae Mariae semper Virgini, beato Michaeli Archangelo, beato Joanni Baptistae, sanctis Apostolis Petro et Paulo, omnibus Sanctis, et vobis, fratres: quia peccavi nimis cogitatione, verbo et opere: mea culpa, mea culpa, mea maxima culpa."
+            content: DataBundle.prayer("Confiteor_")
+                ?? "Confiteor Deo omnipotenti, beatae Mariae semper Virgini, beato Michaeli Archangelo, beato Joanni Baptistae, sanctis Apostolis Petro et Paulo, omnibus Sanctis, et vobis, fratres: quia peccavi nimis cogitatione, verbo et opere: mea culpa, mea culpa, mea maxima culpa. Ideo precor beatam Mariam semper Virginem, beatum Michaelem Archangelum, beatum Joannem Baptistam, sanctos Apostolos Petrum et Paulum, omnes Sanctos, et vos, fratres, orare pro me ad Dominum Deum nostrum."
         ))
 
         s.append(OfficeSection(

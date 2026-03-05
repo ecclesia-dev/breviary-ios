@@ -85,12 +85,35 @@ struct LiturgicalCalendar {
         let sanctiFile = String(format: "%02d-%02d", month, day)
         let temporaFile = determineTemporaFile(date: date, keys: keys, cal: cal, season: season)
 
-        // Check known major feasts
+        // M1: Check moveable I-class feasts computed from Easter.
+        // These are not in majorFeasts (which is keyed by fixed MM-DD strings) because
+        // their date changes every year.  Sacred Heart = Corpus Christi + 8 days.
+        let trinitySunday  = cal.date(byAdding: .day, value: 56, to: keys.easter)!  // Pentecost + 7
+        let sacredHeart    = cal.date(byAdding: .day, value: 68, to: keys.easter)!  // Corpus Christi + 8
+        let moveableFeasts: [(date: Date, name: String, rank: LiturgicalRank, color: LiturgicalColor)] = [
+            (keys.ascension,    "Ascension of Our Lord",            .firstClass, .white),
+            (keys.pentecost,    "Pentecost Sunday",                 .firstClass, .red),
+            (trinitySunday,     "Most Holy Trinity",                .firstClass, .white),
+            (keys.corpusChristi,"Corpus Christi",                   .firstClass, .white),
+            (sacredHeart,       "Most Sacred Heart of Jesus",       .firstClass, .white),
+        ]
+        for feast in moveableFeasts where cal.isDate(date, inSameDayAs: feast.date) {
+            return LiturgicalDay(
+                date: date, name: feast.name, season: season,
+                rank: feast.rank, color: feast.color,
+                sanctiFile: sanctiFile, temporaFile: temporaFile, communeFile: nil
+            )
+        }
+
+        // Check known major feasts (fixed-date sanctoral cycle)
         if let sancti = majorFeasts[sanctiFile] {
+            // M2: Some feasts have a data file whose name differs from the calendar-date key.
+            // e.g. May 1 = St. Joseph the Worker (05-01r.txt), not Philip & James (05-01.txt).
+            let resolvedSanctiFile = sanctiFileOverrides[sanctiFile] ?? sanctiFile
             return LiturgicalDay(
                 date: date, name: sancti.name, season: season,
                 rank: sancti.rank, color: sancti.color,
-                sanctiFile: sanctiFile, temporaFile: temporaFile, communeFile: nil
+                sanctiFile: resolvedSanctiFile, temporaFile: temporaFile, communeFile: nil
             )
         }
 
@@ -245,6 +268,15 @@ struct LiturgicalCalendar {
         "11-01": FeastInfo(name: "All Saints", rank: .firstClass, color: .white),
         "11-02": FeastInfo(name: "All Souls", rank: .firstClass, color: .black),
         "12-08": FeastInfo(name: "Immaculate Conception of the B.V.M.", rank: .firstClass, color: .white),
+        // M4: Christmas Vigil (Dec 24) is Duplex I Classis in the 1962 calendar.
+        "12-24": FeastInfo(name: "Vigil of the Nativity of Our Lord", rank: .firstClass, color: .white),
         "12-25": FeastInfo(name: "Nativity of Our Lord Jesus Christ", rank: .firstClass, color: .white),
+    ]
+
+    /// M2: Data-file overrides for feasts whose sanctiFile path differs from the calendar-date key.
+    /// Key = MM-DD date string; value = the actual filename stem to use when loading BreviaryData/Sancti/.
+    private static let sanctiFileOverrides: [String: String] = [
+        // May 1 = St. Joseph the Worker; proper texts are in 05-01r.txt (not 05-01.txt which is Philip & James).
+        "05-01": "05-01r",
     ]
 }
